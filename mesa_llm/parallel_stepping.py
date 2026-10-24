@@ -7,6 +7,7 @@ from __future__ import annotations
 import asyncio
 import concurrent.futures
 import contextlib
+import inspect
 import logging
 from typing import TYPE_CHECKING
 
@@ -146,7 +147,7 @@ def _agentset_do_async(self, method: str, *args, **kwargs):
         tasks = []
         for agent in self:
             fn = getattr(agent, method, None)
-            if fn is not None and asyncio.iscoroutinefunction(fn):
+            if fn is not None and inspect.iscoroutinefunction(fn):
                 tasks.append(fn(*args, **kwargs))
             else:
                 raise AttributeError(
